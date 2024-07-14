@@ -4,6 +4,15 @@
 见以下视频链接的03:03处：
 https://m.bilibili.com/video/BV19w411q7Ph?buvid=XY62E0F690F564E262A6C396BB2EC4F3E5D08&from_spmid=dt.opus-detail.ywh.0&is_story_h5=false&mid=gvp5X%2BNEU0aS70ISbme%2BTw%3D%3D&p=1&plat_id=116&share_from=ugc&share_medium=android&share_plat=android&share_session_id=6e14d4a8-3049-407c-a6f2-1ead776bbe70&share_source=WEIXIN&share_tag=s_i&spmid=united.player-video-detail.0.0&timestamp=1720951186&unique_k=SZK1gjf&up_id=85754245
 
+# 各个代码文件关系
+main.py 是主函数，将所有代码封装好，直接打开运行，填写参数即可
+
+moball_class.py 是封装好的摸球游戏的类
+
+moball_components.py 是摸球游戏的各个组件，在类中对其进行调用
+
+./images 和 ./info_print_out 是运行 main.py 的输出
+
 # 数理知识点
 需要掌握的数理知识：期望（Expectation）
 
@@ -54,9 +63,20 @@ B太视频中组合 543 的收益是-10，这是这个摸球概率游戏的关�
 
 3 moball_model：内置的游戏后门（1~5），设置了5种游戏模式，输入整数1到5即可。
 
-1起飞(大金额) 2容易(小金额) 3平局(批次为0) 4地狱(全是负) 5正常抽
+1起飞(大金额) 2容易(小金额) 3平局(批次为0) 4地狱(全是负) 5正常抽 6 诱惑模式(前期在前3种模式下选择，后期变为模式5)
 
-4 tempt：诱惑模式(T/F)，可以在主函数中主动调整游戏的结果，实现在指定次的指定受益，如第一次一定为正受益
+不同模式下的不同结果：
+![](E:\GitHubProjects_My\MoBalls\images\gt0714_2205.png "1起飞模式")
+
+![](E:\GitHubProjects_My\MoBalls\images\gt0714_2210.png "2洒水模式")
+
+![](E:\GitHubProjects_My\MoBalls\images\gt0714_2211.png "3平庸模式")
+
+![](E:\GitHubProjects_My\MoBalls\images\gt0714_2216.png "4地狱模式")
+
+![](E:\GitHubProjects_My\MoBalls\images\gt0714_2215.png "5正常模式")
+
+![](E:\GitHubProjects_My\MoBalls\images\gt0714_2219.png "6诱惑模式")
 
 # 游戏可探索修改数据：
 1 组合Group和奖金Bonus可根据自己的需要进行修改，
