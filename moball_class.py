@@ -50,80 +50,82 @@ class MoBallGame:
             # 单串模式执行摸球游戏
             if self.play_model == 'individual':
                 times += 1
+
+                # 更新玩家信息表函数，输入旧玩家信息表，反水游戏之后的新玩家信息表，每次进行输出
+                def get_new_info(info, moball_model):
+                    res, counts, group = mbs.moballs_(moball_model)
+                    # 从上面返回的 group 拿到规则对应的奖金
+                    bonus = mbs.rules_().loc[mbs.rules_()['Group'] == group, 'Bonus'].values[0]
+                    # 更新玩家信息表
+                    info = mbs.record_player_info(ori_info=info,
+                                                  player_name=self.player_name,
+                                                  round_num=times,
+                                                  group=group,
+                                                  bonus=bonus)
+                    print(f'第{times}次摸球游戏结果：' + '\n' + f'{"-".join(res)}' + '\n' + \
+                          f'{"，".join([f"{emoji_dic[k]}{v}个" for k, v in counts.items()])}' + '\n' + \
+                          f'初始金额{self.init_amount}，组合{group}，奖金为{bonus}，结余{info.iloc[-1, -1]}')
+                    print('-' * 20)
+                    return info
+
                 if self.__moball_model == 6:
                     # 给定一个诱惑字典，可扩展成其他形式
                     times_moballmodel_dic = {
                         1: 1, 2: 2, 3: 3, 4: 4, 5: 4,
                         11: 1, 12: 2, 13: 3, 14: 4, 15: 4,
                         22: 1, 23: 4, 24: 4, 25: 3, 26: 2}
-                    # 如果6模式下的次数触发，则诱惑字典启动，否则按照6继续抽
+                    # 如果6模式下的次数触发，则诱惑字典启动，否则按照模式5，正常抽
                     if times in times_moballmodel_dic:
                         self.__moball_model = times_moballmodel_dic[times]
-                        res, counts, group = mbs.moballs_(self.__moball_model)
-                        # 从上面返回的 group 拿到规则对应的奖金
-                        bonus = mbs.rules_().loc[mbs.rules_()['Group'] == group, 'Bonus'].values[0]
+                        info = get_new_info(info, self.__moball_model)
                         self.__moball_model = 6
                     else:
-                        res, counts, group = mbs.moballs_(self.__moball_model)
-                        # 从上面返回的 group 拿到规则对应的奖金
-                        bonus = mbs.rules_().loc[mbs.rules_()['Group'] == group, 'Bonus'].values[0]
-
-                # 更新玩家信息表
-                info = mbs.record_player_info(ori_info=info,
-                                              player_name=self.player_name,
-                                              round_num=times,
-                                              group=group,
-                                              bonus=bonus)
-                # 显示本次摸球游戏的结果
-                print(f'第{times}次摸球游戏结果：' + '\n' + f'{"-".join(res)}' + '\n' + \
-                      f'{"，".join([f"{emoji_dic[k]}{v}个" for k, v in counts.items()])}' + '\n' + \
-                      f'初始金额{self.init_amount}，组合{group}，奖金为{bonus}，结余{info.iloc[-1, -1]}')
-                print('-' * 20)
+                        info = get_new_info(info, self.__moball_model)
+                else:
+                    info = get_new_info(info, self.__moball_model)
 
             # 撸串模式执行游戏
             if self.play_model == 'epochs':
                 epoch += 1
-                # 诱惑模式
-                if self.__moball_model == 6:
-                    # 给定一个诱惑字典，可扩展成其他形式
-                    epoch_moballmodel_dic = {
-                        1: 1, 2: 2, 3: 3, 4: 4, 5: 4,
-                        11: 1, 12: 2, 13: 3, 14: 4, 15: 4,
-                        22: 1, 23: 4, 24: 4, 25: 3, 26: 2}
-                    # 如果6模式下的次数触发，则诱惑字典启动，否则按照6继续抽
-                    if epoch in epoch_moballmodel_dic:
-                        self.__moball_model = epoch_moballmodel_dic[epoch]
-                        # epoch是把数，batch_size是每把的串数，遍历执行摸球函数
-                        for batch in range(1, self.batches + 1):
-                            res, counts, group = mbs.moballs_(self.__moball_model)
-                            # 从上面返回的 group 拿到规则对应的奖金
-                            bonus = mbs.rules_().loc[mbs.rules_()['Group'] == group, 'Bonus'].values[0]
-                            # 每batch更新玩家信息表
-                            info = mbs.record_player_info(ori_info=info,
-                                                          player_name=self.player_name,
-                                                          round_num=f'{epoch}_{batch}',
-                                                          group=group,
-                                                          bonus=bonus)
-                        self.__moball_model = 6
-                    else:
-                        # epoch是把数，batch_size是每把的串数，遍历执行摸球函数
-                        for batch in range(1, self.batches + 1):
-                            res, counts, group = mbs.moballs_(self.__moball_model)
-                            # 从上面返回的 group 拿到规则对应的奖金
-                            bonus = mbs.rules_().loc[mbs.rules_()['Group'] == group, 'Bonus'].values[0]
+
+                # 更新玩家信息表函数，输入旧玩家信息表，返回游戏之后的新玩家信息表，每次进行输出
+                def epochs_get_new_info(info, moball_model, batches=self.batches, ):
+                    for batch in range(1, batches + 1):
+                        res, counts, group = mbs.moballs_(moball_model)
+                        # 从上面返回的 group 拿到规则对应的奖金
+                        bonus = mbs.rules_().loc[mbs.rules_()['Group'] == group, 'Bonus'].values[0]
                         # 每batch更新玩家信息表
                         info = mbs.record_player_info(ori_info=info,
                                                       player_name=self.player_name,
                                                       round_num=f'{epoch}_{batch}',
                                                       group=group,
                                                       bonus=bonus)
-
-                # 显示本轮摸球游戏的结果
-                bonus_sum_perepoch = sum(
-                    info.iloc[((epoch - 1) * self.batches + 1):(epoch * self.batches + 1), -2].values)
-                print(f'第{epoch}轮摸球游戏结束：' + '\n' + \
-                      f'初始金额{self.init_amount}，本轮累计奖金为{bonus_sum_perepoch}，结余{info.iloc[-1, -1]}')
-                print('-' * 20)
+                    # 显示本轮摸球游戏的结果
+                    bonus_sum_perepoch = sum(
+                        info.iloc[((epoch - 1) * self.batches + 1):(epoch * self.batches + 1), -2].values)
+                    print(f'第{epoch}轮摸球游戏结束：' + '\n' + \
+                          f'初始金额{self.init_amount}，本轮累计奖金为{bonus_sum_perepoch}，结余{info.iloc[-1, -1]}')
+                    print('-' * 20)
+                    return info
+                # 诱惑模式
+                if self.__moball_model == 6:
+                    # 给定一个诱惑字典，可扩展成其他形式
+                    epochs_moballmodel_dic = {
+                        1: 1, 2: 2, 3: 3, 4: 4, 5: 4,
+                        11: 1, 12: 2, 13: 3, 14: 4, 15: 4,
+                        22: 1, 23: 4, 24: 4, 25: 3, 26: 2}
+                    # 如果6模式下的次数触发，则诱惑字典启动，否则按照模式5，正常抽
+                    if epoch in epochs_moballmodel_dic:
+                        self.__moball_model = epochs_moballmodel_dic[epoch]
+                        # epoch是把数，batch_size是每把的串数，遍历执行摸球函数
+                        info = epochs_get_new_info(info, self.__moball_model)
+                        self.__moball_model = 6
+                    else:
+                        # epoch是把数，batch_size是每把的串数，遍历执行摸球函数
+                        info = epochs_get_new_info(info, self.__moball_model)
+                else:
+                    # epoch是把数，batch_size是每把的串数，遍历执行摸球函数
+                    info = epochs_get_new_info(info, self.__moball_model)
 
             # 每次/每轮结束后判断结余是否为正，正继续，否则退出游戏
             if info.iloc[-1, -1] <= 0:
@@ -212,16 +214,20 @@ class MoBallGame:
 
 if __name__ == '__main__':
     # 游戏模式
-    play_model = 'epochs'  # individual/epochs
+    play_model = 'individual'  # individual/epochs
     # 玩家姓名
     player_name = 'gt'
     # 初始金额
     init_amount = 100
+    # 每批次数量
+    batches = 8
     # info = play_(play_model, player_name, init_amount=init_amount)
     # draw_analyse(df=info)
 
-    moball_game = MoBallGame(player_name, play_model, init_amount=init_amount,
-                             moball_model=6)
-    moball_game.play_()
-    moball_game.draw_analyse()
+    player = MoBallGame(player_name, play_model,
+                        batches=batches,
+                        init_amount=init_amount,
+                        moball_model=6)
+    player.play_()
+    player.draw_analyse()
     print('-' * 15, 'Done!', '-' * 15)
