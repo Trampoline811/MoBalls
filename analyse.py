@@ -71,6 +71,7 @@ def st1():
 
     # 重置索引index
     df = df.reset_index(drop=True)
+    print('其中，合计与各组合乘积的交汇处为该游戏期望：')
     print(df)
     return df
 
@@ -144,13 +145,13 @@ def draw(start, end, step):
     plt.figure('x轴：组合_543 和 y轴：总期望 的关系')
     plt.plot(x, y, color='olive')
     plt.show()
+    return x_y
 
 
 
 if __name__ == '__main__':
     st1()
-    print(moball_game(bonus_of_543=-5))
-    # print(f'摸球游戏的平均期望：{moball_game(-5)}')
-
+    print(f'摸球游戏的平均期望：'
+          f'{round(moball_game(bonus_of_543=-5), 4)}')
     draw(-10, 0, 101)
 
