@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 
 
+# 设定模式，模式1 2 3 4的结果由此输出，并集成在下面moballs_()函数返回
 def moball_modelsetted_res(model):
     # 设定游戏模式 model： 1起飞(大金额) 2容易(小金额) 3平局(批次为0) 4地狱(全是负) 5正常抽
     # 设置模式-权重组合字典
@@ -14,6 +15,7 @@ def moball_modelsetted_res(model):
     # 3 依照该概率抽，每batch的期望为0
     # 4 只抽543，扣钱!
     # 5 正常抽
+    # 6 诱惑模式
     model_weight_target_combinations_dic = {
         1: ([0.06, 0.32, 0.32, 0.15, 0.15], ['840', '831', '822', '750', '660']),
         2: ([0.1, 0.1, 0.16, 0.16, 0.16, 0.16, 0.16], ['741', '732', '651', '642', '633', '552', '444']),
@@ -46,19 +48,18 @@ def moball_modelsetted_res(model):
     return result
 
 
-# 摸球游戏
+# 单次摸球游戏，返回摸球结果、各颜色球频次、颜色组合数据
 def moballs_(model):
-    group_balls = ['红' + str(i) for i in range(1, 9)] + \
-                  ['黄' + str(i) for i in range(1, 9)] + \
-                  ['蓝' + str(i) for i in range(1, 9)]
-    group_balls = np.array(group_balls)  # np形式的数据
-    if model == 5:
+    group_balls = np.array(['红' + str(i) for i in range(1, 9)] + \
+                           ['黄' + str(i) for i in range(1, 9)] + \
+                           ['蓝' + str(i) for i in range(1, 9)])  # np形式数据
+    if model in [5, 6]:
         res = np.random.choice(group_balls, size=12, replace=False)
     else:
         res = moball_modelsetted_res(model)
 
     # 计算组合模式
-        # 说明 dic遍历适用于已经知道dic结果的情况（闭环），而counter适用于不知道结果的情况（开放）
+    # 说明 dic遍历适用于已经知道dic结果的情况（闭环），而counter函数适用于不知道结果的情况（开放）
     counts = {
         '红': 0, '黄': 0, '蓝': 0
     }
@@ -68,10 +69,12 @@ def moballs_(model):
     group = ''.join(sorted([str(v) for v in counts.values()], reverse=True))  # 543 660 等
 
     # 返回摸球结果、各颜色球频次、颜色组合数据
+    print(f'摸球模式：{model}')
     return res, counts, group
 
 
 # 摸球游戏规则
+# 注意这里840必须降序排列，否则和上面的输出 group 匹配不上
 def rules_():
     rules = pd.DataFrame({'Group': ['840', '831', '822', '750', '660', '741', '732', '651', '642',
                                     '633', '552', '444', '543'],
@@ -126,6 +129,6 @@ if __name__ == '__main__':
 
     # 测试一下按照模式抽球的结果
     # print(moball_modelsetted_res(model=1))
-    print(moballs_(model=1))
+    print(moballs_(model=6))
 
     pass
