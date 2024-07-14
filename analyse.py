@@ -145,8 +145,10 @@ def draw(start, end, step):
     plt.figure('x轴：组合_543 和 y轴：总期望 的关系')
     plt.plot(x, y, color='olive')
     plt.show()
-    return x_y
+    print(f'来找找盈亏平衡点吧：'
+          f'{[i for i in x_y if -0.2<i[1]<0.2]}')
 
+    return x_y
 
 
 if __name__ == '__main__':
