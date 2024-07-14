@@ -133,18 +133,24 @@ def moball_game(bonus_of_543):
     return df.iloc[-1, -1]
 
 
-if __name__ == '__main__':
-    st1()
-    print(moball_game(bonus_of_543=-5))
-    # print(f'摸球游戏的平均期望：{moball_game(-5)}')
-    lis = np.linspace(-10, 0, 101)
+# 画图函数
+def draw(start, end, step):
+    lis = np.linspace(start, end, step)
     x = [i for i in lis]
     y = [moball_game(j) for j in lis]
     x_y = [(round(k, 3), round(moball_game(k), 3)) for k in lis]
-    print(x_y, sep='\n')
 
-    print('Countinue~')
     # 画图
     plt.figure('x轴：组合_543 和 y轴：总期望 的关系')
     plt.plot(x, y, color='olive')
     plt.show()
+
+
+
+if __name__ == '__main__':
+    st1()
+    print(moball_game(bonus_of_543=-5))
+    # print(f'摸球游戏的平均期望：{moball_game(-5)}')
+
+    draw(-10, 0, 101)
+
