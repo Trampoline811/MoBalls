@@ -13,13 +13,14 @@ plt.rcParams['axes.unicode_minus'] = False
 # 排列即A(k,n)，函数为 mt.perm(n, k=None)，n中选k
 # 组合即C(k,n)，函数为 mt.comb(n, k)，n中选k
 
-# 计算 组合-情况书-概率-奖金-各组别期望-总期望
+# 计算 组合-情况数量-概率-奖金-各组别期望-总期望
+# 最后以 df 形式返回
 def st1():
     # 总的可能数量
     total = mt.comb(24, 12)  # 2704156
     # print(total)
 
-    df0 = pd.DataFrame({'组合': ['总数'],
+    df0 = pd.DataFrame({'组合': ['合计'],
                         '情况数': [mt.comb(24, 12)]})
     # print(df0)
     # 每种情况
@@ -49,28 +50,34 @@ def st1():
     df = pd.concat((df0, df1, df2, df3), ignore_index=True)
     df['概率P'] = df['情况数'] / df['情况数'].iloc[0]
     # df.reset_index(drop=True)
-    print(df)
+    # print(df)
 
-    # 添加中奖金额
-    money = pd.DataFrame({'组合': ['840', '831', '750', '741', '732', '651', '642',
+    # 记录中奖金额
+    bonus = pd.DataFrame({'组合': ['840', '831', '750', '741', '732', '651', '642',
                                    '822', '660', '633', '552', '444', '543'],
                           '奖金': [50, 10, 20, 2, 2, 1, 1, 10, 20, 1, 1, 1, -5]})
     # 合并两表
-    df = pd.merge(df, money, how='left', on='组合')
+    df = pd.merge(df, bonus, how='left', on='组合')
+
+    # 按照情况数升序排列，把合计放在最下面
+    df = df.sort_values(by=['情况数'], ascending=True)
 
     # 计算期望
-    df['各组合期望'] = df['概率P'] * df['奖金']
-    df['总期望E'] = df['各组合期望'].sum()
-    # 按照情况数降序排列
-    df = df.sort_values(by=['情况数'], ascending=False)
+    df['各组合乘积'] = df['概率P'] * df['奖金']
+    # df['总期望E'] = df['各组合期望'].sum()
+    total_exp = df['各组合乘积'].sum()
+    # 添加总期望到DataFrame
+    df.iloc[-1, -1] = total_exp
+
     # 重置索引index
     df = df.reset_index(drop=True)
     print(df)
     return df
 
 
-# 把以上步骤封装为函数
-def moball_game(i):
+# 探究 bonus_of_543 和 期望 关系，将以上封装为函数，
+# 输入 543奖金金额，返回总期望
+def moball_game(bonus_of_543):
     # 总的可能数量
     df0 = pd.DataFrame({'组合': ['总数'],
                         '情况数': [mt.comb(24, 12)]})
@@ -102,29 +109,42 @@ def moball_game(i):
     df = pd.concat((df0, df1, df2, df3))
     df['概率P'] = df['情况数'] / df['情况数'].iloc[0]
 
-    # 添加中奖金额
-    money = pd.DataFrame({'组合': ['_840', '_831', '_750', '_741', '_732', '_651', '_642', '_543',
+    # 中奖金额
+    bonus = pd.DataFrame({'组合': ['_840', '_831', '_750', '_741', '_732', '_651', '_642', '_543',
                                    '_822', '_660', '_633', '_552', '_444'],
-                          '奖金': [50, 10, 20, 2, 2, 1, 1, i, 10, 20, 1, 1, 1]})
+                          '奖金': [50, 10, 20, 2, 2, 1, 1, bonus_of_543, 10, 20, 1, 1, 1]})
     # 合并两表
-    df = pd.merge(df, money, how='left', on='组合')
+    df = pd.merge(df, bonus, how='left', on='组合')
+
+    # 按照情况数升序排列，把合计放在最下面
+    df = df.sort_values(by=['情况数'], ascending=True)
 
     # 计算期望
-    df['各组合期望'] = df['概率P'] * df['奖金']
-    df['总期望E'] = df['各组合期望'].sum()
-    return df['总期望E'].iloc[0]
+    df['各组合乘积'] = df['概率P'] * df['奖金']
+    # df['总期望E'] = df['各组合期望'].sum()
+    total_exp = df['各组合乘积'].sum()
+    # 添加总期望到DataFrame
+    df.iloc[-1, -1] = total_exp
+
+    # 重置索引index
+    df = df.reset_index(drop=True)
+    # print(df)
+    # 返回期望
+    return df.iloc[-1, -1]
 
 
 if __name__ == '__main__':
     st1()
+    print(moball_game(bonus_of_543=-5))
     # print(f'摸球游戏的平均期望：{moball_game(-5)}')
     lis = np.linspace(-10, 0, 101)
     x = [i for i in lis]
     y = [moball_game(j) for j in lis]
     x_y = [(round(k, 3), round(moball_game(k), 3)) for k in lis]
-    # print(x_y, sep='\n')
+    print(x_y, sep='\n')
 
+    print('Countinue~')
     # 画图
     plt.figure('x轴：组合_543 和 y轴：总期望 的关系')
     plt.plot(x, y, color='olive')
-    # plt.show()
+    plt.show()
