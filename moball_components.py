@@ -69,7 +69,8 @@ def moballs_(model):
     group = ''.join(sorted([str(v) for v in counts.values()], reverse=True))  # 543 660 等
 
     # 返回摸球结果、各颜色球频次、颜色组合数据
-    print(f'摸球模式：{model}')
+    # 下面这个print() 是测试的时候用的 很方便
+    # print(f'摸球模式：{model}')
     return res, counts, group
 
 
