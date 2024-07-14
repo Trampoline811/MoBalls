@@ -42,7 +42,7 @@ def moball_modelsetted_res(model):
         {'A': '蓝', 'B': '黄', 'C': '红'}
     ]
     replace_dic = random.choice(replace_dics)
-    # 将A1形式的结果转换为红1形式的结果，并打乱顺序输出
+    # 结果形式转换，将A1转换为红1形式，并打乱顺序输出
     result = np.array([replace_dic[x[0]] + x[1] for x in res_lettet])
     random.shuffle(result)
     return result
