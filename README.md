@@ -74,21 +74,25 @@ B太视频中组合 543 的收益是-10，这是这个摸球概率游戏的关�
 
 3 moball_model：内置的游戏后门（1~5），设置了5种游戏模式，输入整数1到5即可。
 
-1起飞(大金额) 2容易(小金额) 3平局(批次为0) 4地狱(全是负) 5正常抽 6 诱惑模式(前期在前3种模式下选择，后期变为模式5)
-
 不同模式下的不同结果：
 
 ![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2205.png "1起飞模式")
+1起飞(大金额)
 
 ![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2210.png "2洒水模式")
+2容易(小金额)
 
-![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2211.png "3平庸模式")
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2211.png "3佛系模式")
+3平(每批次期望为0)
 
 ![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2216.png "4地狱模式")
+4地狱(必中543，收益为负)
 
 ![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2215.png "5正常模式")
+5正常抽
 
 ![](https://github.com/Trampoline811/MoBalls/blob/main/images/tram0717_1135.png "6诱惑模式")
+6 诱惑模式(前期在前3种模式下选择，后期变为模式5)
 
 
 ## 游戏可探索修改数据：
