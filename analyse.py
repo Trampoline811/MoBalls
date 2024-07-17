@@ -176,9 +176,9 @@ def balance_point(points):
 
 
 if __name__ == '__main__':
-    # st1()
-    # print(f'摸球游戏的平均期望：'
-    #       f'{round(get_moball_game_exp(bonus_of_543=-5), 4)}')
+    st1()
+    print(f'摸球游戏的平均期望：'
+          f'{round(get_moball_game_exp(bonus_of_543=-5), 4)}')
     points = draw(-10, 0, 101)[1]
 
     balance_point(points)
