@@ -1,17 +1,26 @@
 # MoBalls
 
 本项目的灵感来自于B站UP主———— SuperB太 的某期B站视频，选自其中的街头夜市摸球游戏。
-见以下视频链接的03:03处：
+
+见以下视频链接的03:03 
+
 https://m.bilibili.com/video/BV19w411q7Ph?buvid=XY62E0F690F564E262A6C396BB2EC4F3E5D08&from_spmid=dt.opus-detail.ywh.0&is_story_h5=false&mid=gvp5X%2BNEU0aS70ISbme%2BTw%3D%3D&p=1&plat_id=116&share_from=ugc&share_medium=android&share_plat=android&share_session_id=6e14d4a8-3049-407c-a6f2-1ead776bbe70&share_source=WEIXIN&share_tag=s_i&spmid=united.player-video-detail.0.0&timestamp=1720951186&unique_k=SZK1gjf&up_id=85754245
 
-## 各个代码文件关系
-main.py 是主函数，将所有代码封装好，直接打开运行，填写参数即可
+## 各代码文件关系
+main.py 是主函数，已将所有代码封装好，直接打开填写参数即可开始游玩游戏
 
-moball_class.py 是封装好的摸球游戏的类
+moball_class.py 是摸球游戏类，基于对组件的调用完成封装
 
-moball_components.py 是摸球游戏的各个组件，在类中对其进行调用
+moball_components.py 是摸球游戏的各组件，在类中对其进行调用
 
 ./images 和 ./info_print_out 是运行 main.py 的输出
+
+./images输出当前次游戏的可视化数据：金额走势图、组合分布和频数
+
+./info_print_out 输出 csv 文件，记录每次游戏时的金额数据变动，表头为：
+
+| Round | PlayerName | Group | Bonus | Result |
+|-------|------------|-------|-------|--------|
 
 ## 数理知识点
 需要掌握的数理知识：期望（Expectation）
@@ -68,15 +77,15 @@ B太视频中组合 543 的收益是-10，这是这个摸球概率游戏的关�
 不同模式下的不同结果：
 ![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2205.png "1起飞模式")
 
-![](.\images\gt0714_2210.png "2洒水模式")
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2210.png "2洒水模式")
 
-![](.\images\gt0714_2211.png "3平庸模式")
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2211.png "3平庸模式")
 
-![](.\images\gt0714_2216.png "4地狱模式")
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2216.png "4地狱模式")
 
-![](.\images\gt0714_2215.png "5正常模式")
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2215.png "5正常模式")
 
-![](.\images\gt0714_2219.png "6诱惑模式")
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/tram0717_1126.png "6诱惑模式")
 
 # 游戏可探索修改数据：
 1 组合Group和奖金Bonus可根据自己的需要进行修改，其存放在 组件的rules()函数下，
