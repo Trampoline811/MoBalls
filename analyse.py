@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 # 防止画图中文报错
 import matplotlib
+
 plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 
@@ -71,14 +72,14 @@ def st1():
 
     # 重置索引index
     df = df.reset_index(drop=True)
-    print('其中，合计与各组合乘积的交汇处为该游戏期望：')
+    print('各组合乘积 的最后一行为，当前游戏规则下的期望：')
     print(df)
     return df
 
 
 # 探究 bonus_of_543 和 期望 关系，将以上封装为函数，
 # 输入 543奖金金额，返回总期望
-def moball_game(bonus_of_543):
+def get_moball_game_exp(bonus_of_543):
     # 总的可能数量
     df0 = pd.DataFrame({'组合': ['总数'],
                         '情况数': [mt.comb(24, 12)]})
@@ -138,22 +139,48 @@ def moball_game(bonus_of_543):
 def draw(start, end, step):
     lis = np.linspace(start, end, step)
     x = [i for i in lis]
-    y = [moball_game(j) for j in lis]
-    x_y = [(round(k, 3), round(moball_game(k), 3)) for k in lis]
+    y = [get_moball_game_exp(j) for j in lis]
+    x_y = [(round(k, 3), round(get_moball_game_exp(k), 3)) for k in lis]
+    points = [x_y[0], x_y[-1]]
 
     # 画图
     plt.figure('x轴：组合_543 和 y轴：总期望 的关系')
     plt.plot(x, y, color='olive')
     plt.show()
     print(f'来找找盈亏平衡点吧：'
-          f'{[i for i in x_y if -0.2<i[1]<0.2]}')
+          f'{[i for i in x_y if -0.2 < i[1] < 0.2]}')
 
-    return x_y
+    return x_y, points
+
+
+# 反推表达式和平衡点
+def balance_point(points):
+    # 定义两个点
+    # 定义两个点
+    x1, y1 = points[0]
+    x2, y2 = points[1]
+
+    # 计算斜率 k
+    k = round((y2 - y1) / (x2 - x1), 3)
+
+    # 计算截距 b
+    b = round(y1 - k * x1, 3)
+
+    # 计算当 y=0 时的 x 值
+    x_at_y0 = round(-b / k, 3)
+
+    # 打印结果
+    print('经过计算：')
+    print(f"直线的表达式为：y = {k}x + {b}")
+    print(f"当 y=0 时，x 的值为：x = {x_at_y0}")
 
 
 if __name__ == '__main__':
-    st1()
-    print(f'摸球游戏的平均期望：'
-          f'{round(moball_game(bonus_of_543=-5), 4)}')
-    draw(-10, 0, 101)
+    # st1()
+    # print(f'摸球游戏的平均期望：'
+    #       f'{round(get_moball_game_exp(bonus_of_543=-5), 4)}')
+    points = draw(-10, 0, 101)[1]
 
+    balance_point(points)
+
+    print('Done~')
