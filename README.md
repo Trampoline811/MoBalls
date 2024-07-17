@@ -22,6 +22,8 @@ moball_components.py 是摸球游戏的各组件，在类中对其进行调用
 | Round | PlayerName | Group | Bonus | Result |
 |-------|------------|-------|-------|--------|
 
+analyse.py 是对当前规则下的期望计算
+
 ## 数理知识点
 需要掌握的数理知识：期望（Expectation）
 
@@ -68,35 +70,35 @@ B太视频中组合 543 的收益是-10，这是这个摸球概率游戏的关�
 
 
 ## 游戏可修改参数：
-1 batches：批量式游戏中一把的次数，数量越大，
+1 batches：批量式游戏中一把的次数，默认为5，一次点击，5次体验。玩不到吃亏玩不到上当！
 
-2 init_amount：游戏玩家的初始金额
+2 init_amount：玩家初始金额
 
-3 moball_model：内置的游戏后门（1~5），设置了5种游戏模式，输入整数1到5即可。
+3 moball_model：内置的游戏后门（1~6），设置了6种游戏模式，输入整数1至6。
 
-不同模式下的不同结果：
+不同模式下的结果走势：
 
-![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2205.png "1起飞模式")
 1起飞(大金额)
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2205.png "1起飞模式")
 
-![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2210.png "2洒水模式")
 2容易(小金额)
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2210.png "2洒水模式")
 
-![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2211.png "3佛系模式")
 3平(每批次期望为0)
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2211.png "3佛系模式")
 
-![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2216.png "4地狱模式")
 4地狱(必中543，收益为负)
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2216.png "4地狱模式")
 
-![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2215.png "5正常模式")
 5正常抽
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/gt0714_2215.png "5正常模式")
 
-![](https://github.com/Trampoline811/MoBalls/blob/main/images/tram0717_1135.png "6诱惑模式")
 6 诱惑模式(前期在前3种模式下选择，后期变为模式5)
+![](https://github.com/Trampoline811/MoBalls/blob/main/images/tram0717_1135.png "6诱惑模式")
 
 
 ## 游戏可探索修改数据：
-1 组合Group和奖金Bonus可根据自己的需要进行修改，其存放在 组件的rules()函数下，
+1 组合Group对应 的奖金Bonus可根据自己的需要进行修改，其存放在组件的rules()函数下，
 
   B太视频里是-10，我这里修改为-5，
 
