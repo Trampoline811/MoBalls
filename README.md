@@ -28,8 +28,10 @@ analyse.py 是对当前规则下的期望计算
 需要掌握的数理知识：期望（Expectation）
 
 期望可以理解为执行某概率游戏一次的平均收益，在本游戏中的计算公式为：
-![](https://latex.codecogs.com/svg.image?\sum_{1}^{i}group_{i}\times&space;bonus_{i})
-$ \sum_{ 1 }^{ i } group_{ i } \times bonus_{ i } $
+
+$` \sum_{ 1 }^{ i } group_{ i } \times bonus_{ i } `$
+
+![](https://latex.codecogs.com/svg.image?\\sum_{1}^{i}group_{i}\timesbonus_{i})
 
 
 B太视频中组合 543 的收益是-10，这是这个摸球概率游戏的关键所在，类似于木桶的最短板。
